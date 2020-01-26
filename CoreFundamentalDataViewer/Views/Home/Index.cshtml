@@ -1,0 +1,234 @@
+﻿@{
+    ViewData["Title"] = "Home Page";
+}
+
+<div>
+    @(Html.Kendo().PanelBar()
+            .Name("IntroPanelBar")
+            .Items(items =>
+            {
+                items.Add()
+                    .Text("Symbol Lookup")
+                    .Selected(true)
+                    .Expanded(true)
+                    .Content(@<text>
+                        <p style="padding:1em 2em">
+                            Symbol Lookup:
+                            @(Html.Kendo().TextBox()
+                                .Name("Ticker"))
+                            @(Html.Kendo().Button()
+                                .Name("button")
+                                .Content("Search")
+                                .Events(e => e.Click("onClick")))
+                        </p>
+                        <p style="padding:1em 2em">
+                            @(Html.Kendo().RadioButton()
+                               .Name("10K")
+                               .Label("Most Recent Annual Report (10-K)")
+                               .HtmlAttributes(new { @name = "report"})
+                               .Checked(true))
+                            @(Html.Kendo().RadioButton()
+                               .Name("10Q")
+                               .Label("Most Recent Quarterly Report (10-Q)")
+                               .HtmlAttributes(new { @name = "report"}))
+                        </p>
+                        <table styple="width:100%">
+                            <tr>
+                                <th>Company:</th>
+                                <th id="Company"></th>
+                            </tr>
+                            <tr>
+                                <th>Latest filing as of:</th>
+                                <th id="FilingDate"></th>
+                            <tr>
+                                <td>Total Current Assets:</td>
+                                <td id="AssetsCurrent"></td>
+                            </tr>
+                            <tr>
+                                <td>Total Current Liabilities:</td>
+                                <td id="LiabilitiesCurrent"></td>
+                            </tr>
+                            <tr>
+                                <td>Working Capital:</td>
+                                <td id="WorkingCapital"></td>
+                            </tr>
+                            <tr>
+                                <td>Quick Ratio:</td>
+                                <td id="QuickRatio"></td>
+                            </tr>
+                        </table>
+                        <p id ="errormsg" style="padding: 1em 2em; color: red"></p>
+                        <p style="padding:1em 2em">
+                            <h6>Links:</h6>
+                            <p id="finviz"></p>
+                            <p id="yahoooptions"></p>
+                            <p id="splithistory"></p>
+                            <p id="iborrowdesk"></p>
+                            <p id="shortsqueeze"></p>
+                            <p id="twitter"></p>
+                            <p id="stocktwits"></p>
+                        </p>
+                    </text>);
+                items.Add()
+                    .Text("Charts")
+                    .Content(@<text>
+                        <p style="padding:1em 2em">
+                            Display chart data
+                            @(Html.Kendo().Chart()
+                                .Name("assetscurrentchart")
+                                .Title("Current Assets")
+                                .Legend(legend => legend.Position(ChartLegendPosition.Bottom))
+                            )
+                        </p>
+                    </text>);
+                        items.Add()
+                            .Text("Visual Studio")
+                            .Content(@<text>
+                                <p style="padding:1em 2em">
+                                    There are powerful new features in Visual Studio for building modern web apps.
+                                    <a target="_blank" href="http://go.microsoft.com/fwlink/?LinkID=525030&clcid=0x409">Learn More</a>
+                                </p>
+                            </text>);
+                                items.Add()
+                                    .Text("Package Management")
+                                    .Content(@<text>
+                                        <p style="padding:1em 2em">
+                                            Bring in libraries from NuGet, Bower, and npm, and automate tasks using Grunt or Gulp.
+                                            <a target="_blank" href="http://go.microsoft.com/fwlink/?LinkID=525029&clcid=0x409">Learn More</a>
+                                        </p>
+                                    </text>);
+                                    })
+    )
+</div>
+
+<script>
+    var responsearr = new Array();
+
+    // Compares two filings together
+    function compare(a, b) {
+        if (Date(a.Period) > Date(b.Period)) return 1;
+        if (Date(b.Period) > Date(a.Period)) return -1;
+
+        return 0;
+    }
+
+    function onClick() {
+
+        // Set up request URL
+        const ticker = document.getElementsByName('Ticker')[0].value;
+        const requestURL = ($("[id='10Q_']").is(":checked")) ? "https://last10k-company-v1.p.rapidapi.com/v1/company/balancesheet?ticker=" + ticker + "&formtype=10-Q"
+            : "https://last10k-company-v1.p.rapidapi.com/v1/company/balancesheet?ticker=" + ticker + "&formtype=10-K";
+
+        fetch(requestURL, {
+            "method": "GET",
+            "headers": {
+                "x-rapidapi-host": "last10k-company-v1.p.rapidapi.com",
+                "x-rapidapi-key": "b3327e6d54mshe467a3859431c87p12cc69jsnfa3da2dbf3f6"
+            }
+        })
+            .then(response => {
+
+                response.json().then(
+                    function (itemResponse) {
+                        // Log data for viewing in Console  
+                        //console.log(itemResponse);
+                        //console.log(itemResponse.Data);
+
+
+                        document.getElementById("Company").innerHTML = itemResponse.Company;
+                        document.getElementById("FilingDate").innerHTML = itemResponse.FilingDate;
+                        document.getElementById("AssetsCurrent").innerHTML = '$' + itemResponse.Data.AssetsCurrent.toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,');
+                        document.getElementById("LiabilitiesCurrent").innerHTML = '$' + itemResponse.Data.LiabilitiesCurrent.toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,');
+                        document.getElementById("WorkingCapital").innerHTML = '$' +(itemResponse.Data.AssetsCurrent - itemResponse.Data.LiabilitiesCurrent).toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,');
+                        document.getElementById("QuickRatio").innerHTML = (itemResponse.Data.AssetsCurrent / itemResponse.Data.LiabilitiesCurrent).toFixed(2);
+
+                        // Set the links to hyperlinks
+                        document.getElementById("finviz").innerHTML = "FinViz".link("https://www.finviz.com/quote.ashx?t=" + ticker);
+                        document.getElementById("yahoooptions").innerHTML = "Yahoo Options".link("https://finance.yahoo.com/quote/" + ticker + "/options");
+                        document.getElementById("splithistory").innerHTML = "Split History".link("http://www.stocksplithistory.com/?symbol=" + ticker);
+                        document.getElementById("iborrowdesk").innerHTML = "IBorrowDesk".link("http://www.iborrowdesk.com/report/" + ticker);
+                        document.getElementById("shortsqueeze").innerHTML = "ShortSqueeze".link("http://shortsqueeze.com/?symbol=" + ticker + "&submit=Short+Quote%E2%84%A2");
+                        document.getElementById("twitter").innerHTML = "Twitter".link("https://twitter.com/search?q=%24" + ticker +"&src=typed_query");
+                        document.getElementById("stocktwits").innerHTML = "StockTwits".link("http://www.stocktwits.com/symbol/" + ticker);
+
+                        //var responsearr = new Array(itemResponse);
+                        var nextresponse = itemResponse;
+                        var i = 1;
+
+                        // Loop to get a lot of filings:
+                        while (i < 10) {
+                            nextresponse = apiLoop(requestURL, i);
+                            //console.log(nextresponse);
+                            i++;
+                        }
+
+                        responsearr.sort(compare);
+                        console.log(responsearr);
+                    },
+                    function (error) {
+                        console.log(error);
+                        document.getElementById("errormsg").innerHTML = error;
+                    }
+                );
+            })
+        .catch(err => {
+	        console.log(err.status);
+        });
+    }
+
+    // Function to loop through the API
+    function apiLoop(requestURL, filingorder) {
+        const filingRequest = requestURL + "&filingorder=" + filingorder;
+
+            fetch(filingRequest, {
+                "method": "GET",
+                "headers": {
+                    "x-rapidapi-host": "last10k-company-v1.p.rapidapi.com",
+                    "x-rapidapi-key": "b3327e6d54mshe467a3859431c87p12cc69jsnfa3da2dbf3f6"
+                }
+            })
+                .then(response => {
+
+                    response.json().then(
+                        function (itemResponse) {
+                            // Log data for viewing in Console  
+                            console.log(itemResponse);
+                            console.log(itemResponse.Data);
+
+                            //var chart = $("#assetscurrentchart").data("kendoChart");
+
+                            //console.log(chart);
+
+                            responsearr.push(itemResponse);
+
+                            //document.getElementById("Company").innerHTML = itemResponse.Company;
+                            //document.getElementById("FilingDate").innerHTML = itemResponse.FilingDate;
+                            //document.getElementById("AssetsCurrent").innerHTML = '$' + itemResponse.Data.AssetsCurrent.toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,');
+                            //document.getElementById("LiabilitiesCurrent").innerHTML = '$' + itemResponse.Data.LiabilitiesCurrent.toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,');
+                            //document.getElementById("WorkingCapital").innerHTML = '$' +(itemResponse.Data.AssetsCurrent - itemResponse.Data.LiabilitiesCurrent).toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,');
+                            //document.getElementById("QuickRatio").innerHTML = (itemResponse.Data.AssetsCurrent / itemResponse.Data.LiabilitiesCurrent).toFixed(2);
+
+                            // Set the links to hyperlinks
+                            //document.getElementById("finviz").innerHTML = "FinViz".link("https://www.finviz.com/quote.ashx?t=" + ticker);
+                            //document.getElementById("splithistory").innerHTML = "Split History".link("http://www.stocksplithistory.com/?symbol=" + ticker);
+                            //document.getElementById("iborrowdesk").innerHTML = "IBorrowDesk".link("http://www.iborrowdesk.com/report/" + ticker);
+                            //document.getElementById("shortsqueeze").innerHTML = "ShortSqueeze".link("http://shortsqueeze.com/?symbol=" + ticker + "&submit=Short+Quote%E2%84%A2");
+                            //document.getElementById("twitter").innerHTML = "Twitter".link("https://twitter.com/search?q=%24" + ticker +"&src=typed_query");
+                            //document.getElementById("stocktwits").innerHTML = "StockTwits".link("http://www.stocktwits.com/symbol/" + ticker);
+
+
+                            //document.getElementById("")
+                            //console.log(c.Value);
+                            //console.log(itemResponse.Data.AssetsCurrent);
+                            return itemResponse;
+                        },
+                        function (error) {
+                            console.log(error);
+                        }
+                    );
+                })
+                .catch(err => {
+                    console.log(err);
+                });
+        }
+</script>
