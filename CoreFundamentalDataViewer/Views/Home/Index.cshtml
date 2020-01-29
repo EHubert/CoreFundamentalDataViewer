@@ -73,12 +73,7 @@
                     .Text("Charts")
                     .Content(@<text>
                         <p style="padding:1em 2em">
-                            Display chart data
-                            @(Html.Kendo().Chart()
-                                .Name("assetscurrentchart")
-                                .Title("Current Assets")
-                                .Legend(legend => legend.Position(ChartLegendPosition.Bottom))
-                            )
+                            <div id="workingCapChart"></div>
                         </p>
                     </text>);
                         items.Add()
@@ -102,6 +97,7 @@
 </div>
 
 <script>
+
     var responsearr = new Array();
 
     // Compares two filings together
@@ -152,19 +148,19 @@
                         document.getElementById("stocktwits").innerHTML = "StockTwits".link("http://www.stocktwits.com/symbol/" + ticker);
 
                         //var responsearr = new Array(itemResponse);
-                        var nextresponse = itemResponse;
-                        var i = 1;
+                        //var nextresponse = itemResponse;
+                        //var i = 1;
 
-                        // Loop to get a lot of filings:
-                        while (i < 10) {
-                            nextresponse = apiLoop(requestURL, i);
-                            debugger
-                            console.log(nextresponse);
-                            i++;
-                        }
+                        //// Loop to get a lot of filings:
+                        //while (i < 10) {
+                        //    nextresponse = apiLoop(requestURL, i);
+                        //    debugger
+                        //    console.log(nextresponse);
+                        //    i++;
+                        //}
 
-                        responsearr.sort(compare);
-                        console.log(responsearr);
+                        //responsearr.sort(compare);
+                        //console.log(responsearr);
                     },
                     function (error) {
                         console.log(error);
@@ -175,6 +171,53 @@
         .catch(err => {
 	        console.log(err.status);
         });
+
+        //build chart after ticker is set
+        console.log(ticker)
+        buildChart(ticker);
+    }
+
+    function buildChart(ticker){
+        $("#workingCapChart").kendoChart({
+            title: {
+                text: "Working Capital: " + ticker
+            },
+            legend: {
+                position: "top"
+            },
+            seriesDefaults: {
+                type: "column"
+            },
+            series: [{
+                name: "Working Capital",
+                field: "WorkingCapital"
+            }],
+            valueAxis: {
+                labels: {
+                    format: "${0}"
+                },
+                line: {
+                    visible: false
+                }
+            },
+            categoryAxis: {
+              type: "category",
+              field: "FilingDate",
+            },
+            dataSource: {
+                transport: {
+                    read: {
+                        url: "/ChartData/GetBars",
+                        dataType: "json",
+                        data: {ticker:ticker}
+                    }
+                },
+                sort: {
+                    field: "filingDate",
+                    dir: "asc"
+                }
+            }
+        })
     }
 
     // Function to loop through the API
