@@ -131,16 +131,16 @@
                 response.json().then(
                     function (itemResponse) {
                         // Log data for viewing in Console  
-                        //console.log(itemResponse);
+                        console.log(itemResponse);
                         //console.log(itemResponse.Data);
 
 
-                        document.getElementById("Company").innerHTML = itemResponse.Company;
-                        document.getElementById("FilingDate").innerHTML = itemResponse.FilingDate;
-                        document.getElementById("AssetsCurrent").innerHTML = '$' + itemResponse.Data.AssetsCurrent.toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,');
-                        document.getElementById("LiabilitiesCurrent").innerHTML = '$' + itemResponse.Data.LiabilitiesCurrent.toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,');
-                        document.getElementById("WorkingCapital").innerHTML = '$' +(itemResponse.Data.AssetsCurrent - itemResponse.Data.LiabilitiesCurrent).toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,');
-                        document.getElementById("QuickRatio").innerHTML = (itemResponse.Data.AssetsCurrent / itemResponse.Data.LiabilitiesCurrent).toFixed(2);
+                        document.getElementById("Company").innerHTML = itemResponse.data.attributes.company.name;
+                        document.getElementById("FilingDate").innerHTML = itemResponse.data.attributes.filing.filingDate;
+                        document.getElementById("AssetsCurrent").innerHTML = '$' + itemResponse.data.attributes.result.AssetsCurrent.toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,');
+                        document.getElementById("LiabilitiesCurrent").innerHTML = '$' + itemResponse.data.attributes.result.LiabilitiesCurrent.toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,');
+                        document.getElementById("WorkingCapital").innerHTML = '$' +(itemResponse.data.attributes.result.AssetsCurrent - itemResponse.data.attributes.result.LiabilitiesCurrent).toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,');
+                        document.getElementById("QuickRatio").innerHTML = (itemResponse.data.attributes.result.AssetsCurrent / itemResponse.data.attributes.result.LiabilitiesCurrent).toFixed(2);
 
                         // Set the links to hyperlinks
                         document.getElementById("finviz").innerHTML = "FinViz".link("https://www.finviz.com/quote.ashx?t=" + ticker);
