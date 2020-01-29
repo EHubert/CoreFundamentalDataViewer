@@ -23,7 +23,7 @@ namespace CoreFundamentalDataViewer.Controllers
 
             if (!string.IsNullOrEmpty(ticker))
             {
-                BalanceSheet balanceSheet = new BalanceSheet();
+                
                 var client = new RestClient("https://last10k-company-v1.p.rapidapi.com/v1/company/balancesheet");
                 var request = new RestRequest(Method.GET);
                 request.AddHeader("x-rapidapi-host", "last10k-company-v1.p.rapidapi.com");
@@ -32,7 +32,8 @@ namespace CoreFundamentalDataViewer.Controllers
 
                 for(int i = 0; i < 10; i++)
                 {
-                    request.AddParameter("filingOrder", i, ParameterType.QueryString);
+                    BalanceSheet balanceSheet = new BalanceSheet();
+                    request.AddOrUpdateParameter("filingorder", i, ParameterType.QueryString);
                     IRestResponse response = client.Execute(request);
                     var result = JsonConvert.DeserializeObject<JObject>(response.Content);
 
