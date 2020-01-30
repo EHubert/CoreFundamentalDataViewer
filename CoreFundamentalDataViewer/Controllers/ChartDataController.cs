@@ -30,12 +30,14 @@ namespace CoreFundamentalDataViewer.Controllers
                 request.AddHeader("x-rapidapi-key", "b3327e6d54mshe467a3859431c87p12cc69jsnfa3da2dbf3f6");
                 request.AddParameter("ticker", ticker, ParameterType.QueryString);
 
-                for(int i = 0; i < 10; i++)
+                int i = 0;
+                var result = new JObject();
+                while (i < 10 && result != null)
                 {
                     BalanceSheet balanceSheet = new BalanceSheet();
                     request.AddOrUpdateParameter("filingorder", i, ParameterType.QueryString);
                     IRestResponse response = client.Execute(request);
-                    var result = JsonConvert.DeserializeObject<JObject>(response.Content);
+                    result = JsonConvert.DeserializeObject<JObject>(response.Content);
 
                     if(result != null)
                     {
@@ -45,6 +47,8 @@ namespace CoreFundamentalDataViewer.Controllers
 
                         balanceSheets.Add(balanceSheet);
                     }
+
+                    i++;
                 }
             }
 
