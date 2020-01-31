@@ -2,15 +2,20 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using CoreFundamentalDataViewer.Models;
 using Microsoft.AspNetCore.Mvc;
 
 namespace CoreFundamentalDataViewer.Controllers
 {
     public class HomeController : Controller
     {
-        public IActionResult Index()
+        public IActionResult Index(string symbol)
         {
-            return View();
+            HomeViewModel hvm = new HomeViewModel();
+            
+            hvm.Symbol = symbol;
+
+            return View(hvm);
         }
 
         public IActionResult About()
