@@ -32,6 +32,9 @@ namespace CoreFundamentalDataViewer.Controllers
 
                 int i = 0;
                 var result = new JObject();
+
+                /*
+
                 while (i < 10 && result != null)
                 {
                     BalanceSheet balanceSheet = new BalanceSheet();
@@ -50,6 +53,9 @@ namespace CoreFundamentalDataViewer.Controllers
 
                     i++;
                 }
+
+                */
+
             }
 
             return Json(balanceSheets);

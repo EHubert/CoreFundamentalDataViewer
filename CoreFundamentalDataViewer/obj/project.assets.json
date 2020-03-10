@@ -2636,7 +2636,7 @@
       ]
     },
     "Microsoft.DotNet.InternalAbstractions/1.0.0": {
-      "sha512": "S8f3mnSN4yNYafvMEuZKz3VSSv49BQahI6Ibmx9ryuc+7EQ3QsTt4rSvrazwoX2qcLhkPpDV/wLW7yDK6nyuFA==",
+      "sha512": "AAguUq7YyKk3yDWPoWA8DrLZvURxB/LrDdTn1h5lmPeznkFUpfC3p459w5mQYQE0qpquf/CkSQZ0etiV5vRHFA==",
       "type": "package",
       "path": "microsoft.dotnet.internalabstractions/1.0.0",
       "files": [
@@ -5682,7 +5682,7 @@
       ]
     },
     "System.Runtime.CompilerServices.Unsafe/4.5.2": {
-      "sha512": "k3rsGIl3aG0AJVIxs8z2mTvF4BSFJtkHSYbnhgcdZX9L80Hr5U8/VYHlci26mJz3gZSFX1JjRyEQZhbDnBb4tw==",
+      "sha512": "wprSFgext8cwqymChhrBLu62LMg/1u92bU+VOwyfBimSPVFXtsNqEWC92Pf9ofzJFlk4IHmJA75EDJn1b2goAQ==",
       "type": "package",
       "path": "system.runtime.compilerservices.unsafe/4.5.2",
       "files": [
@@ -7007,31 +7007,36 @@
     ]
   },
   "packageFolders": {
-    "C:\\Users\\adrianbegi\\.nuget\\packages\\": {},
+    "C:\\Users\\Eric Hubert\\.nuget\\packages\\": {},
+    "C:\\Microsoft\\Xamarin\\NuGet\\": {},
     "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\adrianbegi\\Source\\Repos\\EHubert\\CoreFundamentalDataViewer\\CoreFundamentalDataViewer\\CoreFundamentalDataViewer.csproj",
+      "projectUniqueName": "C:\\Users\\Eric Hubert\\Source\\Repos\\EHubert\\CoreFundamentalDataViewer\\CoreFundamentalDataViewer\\CoreFundamentalDataViewer.csproj",
       "projectName": "CoreFundamentalDataViewer",
-      "projectPath": "C:\\Users\\adrianbegi\\Source\\Repos\\EHubert\\CoreFundamentalDataViewer\\CoreFundamentalDataViewer\\CoreFundamentalDataViewer.csproj",
-      "packagesPath": "C:\\Users\\adrianbegi\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\adrianbegi\\Source\\Repos\\EHubert\\CoreFundamentalDataViewer\\CoreFundamentalDataViewer\\obj\\",
+      "projectPath": "C:\\Users\\Eric Hubert\\Source\\Repos\\EHubert\\CoreFundamentalDataViewer\\CoreFundamentalDataViewer\\CoreFundamentalDataViewer.csproj",
+      "packagesPath": "C:\\Users\\Eric Hubert\\.nuget\\packages\\",
+      "outputPath": "C:\\Users\\Eric Hubert\\Source\\Repos\\EHubert\\CoreFundamentalDataViewer\\CoreFundamentalDataViewer\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
+        "C:\\Microsoft\\Xamarin\\NuGet\\",
         "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
       ],
       "configFilePaths": [
-        "C:\\Users\\adrianbegi\\Source\\Repos\\EHubert\\CoreFundamentalDataViewer\\NuGet.Config",
-        "C:\\Users\\adrianbegi\\AppData\\Roaming\\NuGet\\NuGet.Config",
-        "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
+        "C:\\Users\\Eric Hubert\\Source\\Repos\\EHubert\\CoreFundamentalDataViewer\\NuGet.Config",
+        "C:\\Users\\Eric Hubert\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config",
+        "C:\\Program Files (x86)\\NuGet\\Config\\Xamarin.Offline.config"
       ],
       "originalTargetFrameworks": [
         "netcoreapp3.1"
       ],
       "sources": {
-        "https://api.nuget.org/v3/index.json": {}
+        "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
+        "https://api.nuget.org/v3/index.json": {},
+        "https://nuget.telerik.com/nuget": {}
       },
       "frameworks": {
         "netcoreapp3.1": {
